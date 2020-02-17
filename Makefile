@@ -6,7 +6,7 @@ BUILD_DIR := build
 OBJ := $(patsubst %.c,$(BUILD_DIR)/%.o,$(SOURCES))
 
 DRIVER_ARCHIVE := $(BUILD_DIR)/libdriver.a
-DRIVER_SOURCE := hardware.c io.c
+DRIVER_SOURCE := hardware.c io.c order.c doors.c queue.c elevator.c
 
 CC := gcc
 CFLAGS := -O0 -g3 -Wall -Werror -std=c11 -I$(SOURCE_DIR)

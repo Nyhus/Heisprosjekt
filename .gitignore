@@ -3,3 +3,6 @@
 *.out
 *.vs
 html/
+build/
+elevator
+

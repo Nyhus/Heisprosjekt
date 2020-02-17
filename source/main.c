@@ -5,6 +5,8 @@
 
 int main(){
     int error = hardware_init();
+
+
     if(error != 0){
         fprintf(stderr, "Unable to initialize hardware\n");
         exit(1);
@@ -12,10 +14,8 @@ int main(){
 
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-
+    
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
-
-    test();
 
     while(1){
         if(hardware_read_stop_signal()){

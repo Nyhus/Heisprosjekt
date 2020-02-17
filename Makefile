@@ -1,4 +1,4 @@
-SOURCES := main.c
+SOURCES := main.c order.c doors.c queue.c elevator.c
 
 SOURCE_DIR := source
 BUILD_DIR := build
@@ -6,7 +6,7 @@ BUILD_DIR := build
 OBJ := $(patsubst %.c,$(BUILD_DIR)/%.o,$(SOURCES))
 
 DRIVER_ARCHIVE := $(BUILD_DIR)/libdriver.a
-DRIVER_SOURCE := hardware.c io.c order.c doors.c queue.c elevator.c
+DRIVER_SOURCE := hardware.c io.c
 
 CC := gcc
 CFLAGS := -O0 -g3 -Wall -Werror -std=c11 -I$(SOURCE_DIR)
@@ -32,3 +32,4 @@ $(DRIVER_ARCHIVE) : $(DRIVER_SOURCE:%.c=$(BUILD_DIR)/driver/%.o)
 .PHONY: clean
 clean :
 	rm -rf $(BUILD_DIR) elevator
+

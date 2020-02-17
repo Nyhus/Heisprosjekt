@@ -27,6 +27,7 @@ static void sigint_handler(int sig){
 }
 
 int main(){
+	printf("Start! \n");
     int error = hardware_init();
     if(error != 0){
         fprintf(stderr, "Unable to initialize hardware\n");
@@ -37,9 +38,10 @@ int main(){
 
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-
+    printf("Test3\n");
     test();
-
+    //hardware_command_floor_indicator_on(1);
+    printf("Test3\n");
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
     while(1){

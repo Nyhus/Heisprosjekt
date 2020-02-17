@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "hardware.h"
+#include "order.h"
 
 int main(){
     int error = hardware_init();
@@ -13,6 +14,8 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
 
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
+
+    test();
 
     while(1){
         if(hardware_read_stop_signal()){

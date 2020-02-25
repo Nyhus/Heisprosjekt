@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <stdbool.h>
 #include "hardware.h"
 #include "order.h"
+#include "elevator.h"
 
 static void clear_all_order_lights(){
     HardwareOrder order_types[3] = {
@@ -38,13 +40,18 @@ int main(){
 
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
-    printf("Test3\n");
-    test();
-    //hardware_command_floor_indicator_on(1);
-    printf("Test3\n");
+
+    struct elevatorState state = {};
+    struct elevatorState *eleState;
+    eleState = &state;
+    
+    printf("-------\n");
+
+
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
     while(1){
+
         if(hardware_read_stop_signal()){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             break;
@@ -56,6 +63,7 @@ int main(){
         if(hardware_read_floor_sensor(HARDWARE_NUMBER_OF_FLOORS - 1)){
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
         }
+
 
         /* All buttons must be polled, like this: */
         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){

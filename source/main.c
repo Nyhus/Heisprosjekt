@@ -45,7 +45,10 @@ int main(){
     struct elevatorState *eleState;
     eleState = &state;
     
-    printf("-------\n");
+    while(eleState->lastVisitedFloor == 0){
+        initializeElevator(eleState);
+	}
+    printf("%d------\n",eleState->lastVisitedFloor);
 
 
     hardware_command_movement(HARDWARE_MOVEMENT_UP);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "elevator.h"
+#include "hardware.h"
 
 
 void flushState(struct elevatorState *state){
@@ -21,4 +22,15 @@ void flushState(struct elevatorState *state){
     state->movementState[0] = 0;
     state->movementState[1] = 0;
     state->movementState[2] = 0;
+}
+
+void initializeElevator(struct elevatorState *state){
+    for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
+        if(hardware_read_floor_sensor(i)){
+            state->lastVisitedFloor = i;
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            break;
+		}
+	}
+    hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
 }

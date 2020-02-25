@@ -27,7 +27,7 @@ void flushState(struct elevatorState *state){
 void initializeElevator(struct elevatorState *state){
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
         if(hardware_read_floor_sensor(i)){
-            state->lastVisitedFloor = i;
+            state->lastVisitedFloor = i+1;
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             break;
 		}

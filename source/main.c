@@ -51,7 +51,7 @@ int main(){
     printf("%d------\n",eleState->lastVisitedFloor);
 
 
-    hardware_command_movement(HARDWARE_MOVEMENT_UP);
+    //hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
     while(1){
 

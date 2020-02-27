@@ -9,8 +9,15 @@
 #include "elevator.h"
 
 
-
+/**
+ * @brief Updates state with all new orders.
+ *
+ * @param @p state Pointer to the elevator state.
+ *
+ */
 void read_orders(struct elevatorState *state);
+
+
 
 
 

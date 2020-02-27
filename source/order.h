@@ -17,7 +17,14 @@
  */
 void read_orders(struct elevatorState *state);
 
-
+/**
+ * @brief Clears order when the elevator arrives at floor.
+ *
+ * @param @p state Pointer to the elevator state.
+ * @param floorToUpdate Floor to remove order for.
+ *
+ */
+void clear_order(struct elevatorState *state, int floorToUpdate);
 
 
 

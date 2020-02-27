@@ -29,3 +29,12 @@ void read_orders(struct elevatorState *state){
         }
     }
 }
+
+void clear_order(struct elevatorState *state, int floorToUpdate){
+    hardware_command_order_light(floorToUpdate, HARDWARE_ORDER_DOWN, 0)
+    hardware_command_order_light(floorToUpdate, HARDWARE_ORDER_UP, 0);
+    hardware_command_order_light(floorToUpdate, HARDWARE_ORDER_INSIDE, 0);
+    state->orderInside[floorToUpdate] = false;
+    state->orderDown[floorToUpdate] = false;
+    state->orderUp[floorToUpdate] = false;
+}

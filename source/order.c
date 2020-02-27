@@ -3,6 +3,7 @@
 #include "order.h"
 #include "hardware.h"
 #include "elevator.h"
+#include "queue.h"
 
 
 void read_orders(struct elevatorState *state){
@@ -13,18 +14,21 @@ void read_orders(struct elevatorState *state){
             if(hardware_read_order(f, HARDWARE_ORDER_INSIDE)){
                 hardware_command_order_light(f, HARDWARE_ORDER_INSIDE, 1);
                 state->orderInside[f] = true;
+                updateTargetFloor(state);
             }
 
             /* Orders going up */
             if(hardware_read_order(f, HARDWARE_ORDER_UP)){
                 hardware_command_order_light(f, HARDWARE_ORDER_UP, 1);
                 state->orderUp[f] = true;
+                updateTargetFloor(state);
             }
 
             /* Orders going down */
             if(hardware_read_order(f, HARDWARE_ORDER_DOWN)){
                 hardware_command_order_light(f, HARDWARE_ORDER_DOWN, 1);
                 state->orderDown[f] = true;
+                updateTargetFloor(state);
             }
         }
     }

@@ -30,7 +30,8 @@ void initializeElevator(struct elevatorState *state){
         if(hardware_read_floor_sensor(i)){
             state->lastVisitedFloor = i+1;
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            openDoors(state);
+            state->movementState = MOVEMENT_IDLE;
+            //openDoors(state);
             break;
 		}
 	}

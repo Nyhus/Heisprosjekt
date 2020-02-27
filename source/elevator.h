@@ -16,8 +16,11 @@ struct elevatorState {
     bool orderDown[3];
     bool orderInside[4];
     unsigned short lastVisitedFloor;
+    unsigned short nextFloor;
+    unsigned short targetFloor;
     bool stopButton;
     bool doorOpen;
+    unsigned long long doorOpenTime;
     bool obstruction;
     bool movementState[3];
 };

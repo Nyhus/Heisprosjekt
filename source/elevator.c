@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "elevator.h"
 #include "hardware.h"
-
+#include "doors.h"
 
 void flushState(struct elevatorState *state){
     // for (int i = 0; i < sizeOf(); i++;) {}
@@ -30,6 +30,7 @@ void initializeElevator(struct elevatorState *state){
         if(hardware_read_floor_sensor(i)){
             state->lastVisitedFloor = i+1;
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            openDoors(state);
             break;
 		}
 	}

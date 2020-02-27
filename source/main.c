@@ -5,6 +5,7 @@
 #include "hardware.h"
 #include "order.h"
 #include "elevator.h"
+#include "doors.h"
 
 static void clear_all_order_lights(){
     HardwareOrder order_types[3] = {
@@ -39,7 +40,7 @@ int main(){
 
     signal(SIGINT, sigint_handler);
 
-    printf("=== Example Program ===\n");
+    printf("=== Program start ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
 
     struct elevatorState state = {};
@@ -50,9 +51,6 @@ int main(){
         initializeElevator(eleState);
 	}
     printf("%d------\n",eleState->lastVisitedFloor);
-
-
-    //hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
     while(1){
 
@@ -82,12 +80,12 @@ int main(){
         }
 
         read_orders(eleState);
-
+        closeDoors(eleState);
         if(hardware_read_obstruction_signal()){
             eleState->obstruction = true;
         }else{
             eleState->obstruction = false;
         }
-
+    }
     return 0;
 }

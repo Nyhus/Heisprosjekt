@@ -6,11 +6,12 @@ time_t startTime;
 
 void openDoors(){
     // Etasjekontroll
+    // Fjerne etasjelys
     startTime = time(NULL);
 }
 
 void closeDoors(struct elevatorState* liftState){
-    if (time(NULL) - startTime > 3 && liftState->obstruction == false){
+    if (time(NULL) - startTime >= 3 && liftState->obstruction == false){
         
     }
 }

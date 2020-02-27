@@ -17,6 +17,7 @@ static void clear_all_order_lights(){
         for(int i = 0; i < 3; i++){
             HardwareOrder type = order_types[i];
             hardware_command_order_light(f, type, 0);
+
         }
     }
 }
@@ -57,7 +58,11 @@ int main(){
 
         if(hardware_read_stop_signal()){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            clear_all_order_lights();
+            hardware_command_stop_light(1);
             break;
+        }else{
+            hardware_command_stop_light(0);
         }
 
         if(hardware_read_floor_sensor(0)){
@@ -79,13 +84,10 @@ int main(){
         read_orders(eleState);
 
         if(hardware_read_obstruction_signal()){
-            hardware_command_stop_light(1);
-            clear_all_order_lights();
+            eleState->obstruction = true;
+        }else{
+            eleState->obstruction = false;
         }
-        else{
-            hardware_command_stop_light(0);
-        }
-    }
 
     return 0;
 }

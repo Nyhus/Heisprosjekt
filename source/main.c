@@ -84,6 +84,7 @@ int main(){
             if(hardware_read_floor_sensor(eleState->lastVisitedFloor)){
                 clear_order(eleState,eleState->lastVisitedFloor);
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                // OPENDOORS
             }
             
             //printf("movem  re updatemovementDirection before update, %d\n",eleState->movementState);

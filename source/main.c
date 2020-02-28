@@ -82,6 +82,7 @@ int main(){
             }
         }
         if(eleState->lastVisitedFloor == eleState->targetFloor){
+            clear_order(eleState,eleState->lastVisitedFloor);
             printf("lastVisited == target, %d\n",eleState->movementState);
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             updateTargetFloor(eleState);

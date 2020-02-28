@@ -7,7 +7,7 @@
 
 
 void read_orders(struct elevatorState *state){
-    if(state->lastVisitedFloor != 0){
+    if(state->lastVisitedFloor != -1){
         /* Lights are set and cleared like this: */
         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
             /* Internal orders */

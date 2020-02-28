@@ -1,5 +1,6 @@
-include <math.h>
-include "elevator.h"
+#include <math.h>
+#include "elevator.h"
+#include "hardware.h"
 
 int nextTargetDirectionUp(struct elevatorState *state){
     int highestOrderDown = -1;
@@ -27,7 +28,11 @@ int nextTargetDirectionUp(struct elevatorState *state){
 	}else if(lowestOrderInside != 4 && lowestOrderUp == 4){
         return lowestOrderInside;
 	}else{
-        return fmin(lowestOrderInside,lowestOrderUp);
+                if(lowestOrderInside < lowestOrderUp){
+                        return lowestOrderInside;
+                }else{
+                        return lowestOrderUp;
+                }
 	}
 }
 
@@ -46,7 +51,7 @@ int nextTargetDirectionDown(struct elevatorState *state){
 	}
     int highestOrderInside = -1;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
-        if(hardware_read_order(i, HARDWARE_ORDER_INSIDE) && i > lowestOrderInside && i < state->lastVisitedFloor){
+        if(hardware_read_order(i, HARDWARE_ORDER_INSIDE) && i > highestOrderInside && i < state->lastVisitedFloor){
                 highestOrderInside = i;
         }
 	}
@@ -61,8 +66,12 @@ int nextTargetDirectionDown(struct elevatorState *state){
 	}else if(highestOrderInside != -1 && highestOrderDown == -1){
         return highestOrderInside;
 	}else{
-        return fmax(highestOrderDown,highestOrderInside);
-	}
+                if(highestOrderDown > highestOrderInside){
+                        return highestOrderDown;
+                }else{
+                        return highestOrderInside;
+                }
+        }
 }
 
 int nextTargetNoDirection(struct elevatorState *state){
@@ -80,6 +89,7 @@ int nextTargetNoDirection(struct elevatorState *state){
                 return i;
             }
     }
+        return state->lastVisitedFloor;
 }
 
 void updateTargetFloor(struct elevatorState *state){

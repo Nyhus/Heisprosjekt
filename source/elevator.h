@@ -21,9 +21,9 @@ struct elevatorState {
     bool orderUp[3];
     bool orderDown[3];
     bool orderInside[4];
-    unsigned short lastVisitedFloor;
-    unsigned short nextFloor;
-    unsigned short targetFloor;
+    short lastVisitedFloor;
+    short nextFloor;
+    short targetFloor;
     bool stopButton;
     bool doorOpen;
     unsigned long long doorOpenTime;

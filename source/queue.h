@@ -37,7 +37,7 @@ int nextTargetDirectionUp(struct elevatorState *state);
 int nextTargetDirectionDown(struct elevatorState *state);
 
 /** 
- * @brief Returns the next target floor when elevator stands still.
+ * @brief Returns the next target floor when elevator stands still. Returns -1 for no orders.
  *
  * @param @p state Pointer to elevator state.
  */

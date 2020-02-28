@@ -35,7 +35,7 @@ struct elevatorState {
 
 /**
  * @brief Sets everything to zero and false.
-
+ *
  * @param @p state Pointer to elevator state.
 */
 void flushState(struct elevatorState *state);

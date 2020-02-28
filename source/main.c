@@ -6,6 +6,7 @@
 #include "order.h"
 #include "elevator.h"
 #include "doors.h"
+#include "queue.h"
 
 static void clear_all_order_lights(){
     HardwareOrder order_types[3] = {
@@ -63,12 +64,12 @@ int main(){
             hardware_command_stop_light(0);
         }
 
-        if(hardware_read_floor_sensor(0)){
+        /*if(hardware_read_floor_sensor(0)){
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
         }
         if(hardware_read_floor_sensor(HARDWARE_NUMBER_OF_FLOORS - 1)){
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-        }
+        }*/
 
 
         /* For-loop for updating last visited floor */
@@ -78,6 +79,10 @@ int main(){
                 eleState->lastVisitedFloor = f;
             }
         }
+        if(eleState->lastVisitedFloor == eleState->nextFloor){
+            updateTargetFloor(eleState);  
+		}
+
 
         read_orders(eleState);
         closeDoors(eleState);

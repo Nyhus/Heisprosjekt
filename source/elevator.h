@@ -8,6 +8,12 @@
 #include <stdbool.h>
 #include "hardware.h"
 
+typedef enum {
+    MOVEMENT_UP,
+    MOVEMENT_IDLE,
+    MOVEMENT_DOWN
+} movementDirection;
+
 /** 
  * @brief Keeps track of states. 
  */
@@ -22,7 +28,8 @@ struct elevatorState {
     bool doorOpen;
     unsigned long long doorOpenTime;
     bool obstruction;
-    bool movementState[3];
+    // bool movementState[3]; // IDLING (nothing to do; 1) -- Movement UP and DOWN (moving; 1)  
+    movementDirection movementState;
 };
 
 

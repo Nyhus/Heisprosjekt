@@ -80,9 +80,16 @@ int main(){
             }
         }
         if(eleState->lastVisitedFloor == eleState->nextFloor){
-            updateTargetFloor(eleState);  
+            updateTargetFloor(eleState);
+            updateNextFloor(eleState);
 		}
-
+        if(eleState->targetFloor > eleState->lastVisitedFloor){
+            hardware_command_movement(HARDWARE_MOVEMENT_UP);
+		}else if(eleState->targetFloor < eleState->lastVisitedFloor){
+            hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+		}else{
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);  
+		}
 
         read_orders(eleState);
         closeDoors(eleState);

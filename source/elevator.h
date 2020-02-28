@@ -27,8 +27,7 @@ struct elevatorState {
     bool stopButton;
     bool doorOpen;
     unsigned long long doorOpenTime;
-    bool obstruction;
-    // bool movementState[3]; // IDLING (nothing to do; 1) -- Movement UP and DOWN (moving; 1)  
+    bool obstruction;  
     movementDirection movementState;
 };
 

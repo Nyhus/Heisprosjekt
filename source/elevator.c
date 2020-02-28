@@ -16,9 +16,6 @@ void flushState(struct elevatorState *state){
     state->orderInside[1] = 0;
     state->orderInside[2] = 0;
     state->orderInside[3] = 0;
-    state->stopButton = false;
-    state->doorOpen = false;
-    state->obstruction = false;
     state->movementState = MOVEMENT_IDLE;
 }
 

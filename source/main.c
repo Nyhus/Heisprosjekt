@@ -50,6 +50,7 @@ int main(){
     
     while(eleState->lastVisitedFloor == -1){
         initializeElevator(eleState);
+        clear_all_order_lights();
 	}
     printf("lastVisitedFloor before while:%d------\n",eleState->lastVisitedFloor);
 
@@ -58,11 +59,13 @@ int main(){
         if(hardware_read_stop_signal()){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             clear_all_order_lights();
+            flushState(eleState);
+            eleState->targetFloor = eleState->lastVisitedFloor;
             hardware_command_stop_light(1);
         }else{
             hardware_command_stop_light(0);
         }
-        if(hardware_read_order(3, HARDWARE_ORDER_INSIDE)){
+        if(hardware_read_order(3, HARDWARE_ORDER_INSIDE)){ // Innside-knapp 4 terminerer programmet
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             break;
         }
@@ -87,21 +90,25 @@ int main(){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             updateTargetFloor(eleState);
             printf("targetFloor updated\n");
-            printf("%d\n",eleState->targetFloor);
+            printf("target floor = %d\n",eleState->targetFloor);
+            printf("movementDirection = %d\n",eleState->movementState);
             // updateNextFloor(eleState);
 		}
-        if(eleState->targetFloor > eleState->lastVisitedFloor){
+        if(eleState->targetFloor > eleState->lastVisitedFloor && !hardware_read_stop_signal()){
             printf("targetFloor larger than lastVisited\n");
+            eleState->movementState = MOVEMENT_UP;
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
-		}else if(eleState->targetFloor < eleState->lastVisitedFloor){
-            // printf("targetFloor smaller than lastVisited\n");
+		}else if(eleState->targetFloor < eleState->lastVisitedFloor && !hardware_read_stop_signal()){
+            printf("targetFloor smaller than lastVisited\n");
+            eleState->movementState = MOVEMENT_DOWN;
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
 		}else{
-            printf("targetFloor == lastVisitedFloor");
+            printf("targetFloor == lastVisitedFloor\n");
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);  
 		}
 
         read_orders(eleState);
+        updateTargetFloor(eleState);
         // closeDoors(eleState);
         if(hardware_read_obstruction_signal()){
             eleState->obstruction = true;

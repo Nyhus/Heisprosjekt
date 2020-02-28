@@ -1,23 +1,24 @@
 #include <math.h>
 #include "elevator.h"
 #include "hardware.h"
+#include <stdio.h>
 
 int nextTargetDirectionUp(struct elevatorState *state){
     int highestOrderDown = -1;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
-        if(hardware_read_order(i, HARDWARE_ORDER_DOWN) && i > highestOrderDown && i > state->lastVisitedFloor){
+        if(state->orderDown[i] && i > highestOrderDown && i > state->lastVisitedFloor){
                 highestOrderDown = i;
         }
 	}
     int lowestOrderUp = 4;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
-        if(hardware_read_order(i, HARDWARE_ORDER_UP) && i < lowestOrderUp && i > state->lastVisitedFloor){
+        if(state->orderUp[i] && i < lowestOrderUp && i > state->lastVisitedFloor){
                 lowestOrderUp = i;
         }
 	}
     int lowestOrderInside = 4;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
-        if(hardware_read_order(i, HARDWARE_ORDER_INSIDE) && i < lowestOrderInside && i > state->lastVisitedFloor){
+        if(state->orderInside[i] && i < lowestOrderInside && i > state->lastVisitedFloor){
                 lowestOrderInside = i;
         }
 	}
@@ -39,19 +40,19 @@ int nextTargetDirectionUp(struct elevatorState *state){
 int nextTargetDirectionDown(struct elevatorState *state){
     int highestOrderDown = -1;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
-        if(hardware_read_order(i, HARDWARE_ORDER_DOWN) && i > highestOrderDown && i < state->lastVisitedFloor){
+        if(state->orderDown[i] && i > highestOrderDown && i < state->lastVisitedFloor){
                 highestOrderDown = i;
         }
 	}
     int lowestOrderUp = 4;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
-        if(hardware_read_order(i, HARDWARE_ORDER_UP) && i < lowestOrderUp && i < state->lastVisitedFloor){
+        if(state->orderUp[i] && i < lowestOrderUp && i < state->lastVisitedFloor){
                 lowestOrderUp = i;
         }
 	}
     int highestOrderInside = -1;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
-        if(hardware_read_order(i, HARDWARE_ORDER_INSIDE) && i > highestOrderInside && i < state->lastVisitedFloor){
+        if(state->orderInside[i] && i > highestOrderInside && i < state->lastVisitedFloor){
                 highestOrderInside = i;
         }
 	}
@@ -77,15 +78,18 @@ int nextTargetDirectionDown(struct elevatorState *state){
 int nextTargetNoDirection(struct elevatorState *state){
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
             
-            if(hardware_read_order(i, HARDWARE_ORDER_INSIDE)){
+            if(state->orderDown[i] == true){
+                    printf("1111111111111111111111111111111111111111111           %d\n",i);
                 return i;
             }
 
-            if(hardware_read_order(i, HARDWARE_ORDER_UP)){
+            if(state->orderUp[i] == true){
+                    printf("2222222222222222222222222222222222222222222222           %d\n",i);
                 return i;
             }
 
-            if(hardware_read_order(i, HARDWARE_ORDER_DOWN)){
+            if(state->orderInside[i] == true){
+                    printf("33333333333333333333333333333333333333333333333           %d\n",i);
                 return i;
             }
     }
@@ -95,19 +99,25 @@ int nextTargetNoDirection(struct elevatorState *state){
 void updateTargetFloor(struct elevatorState *state){
 	switch(state->movementState){
         case MOVEMENT_UP :
+                //printf("UP\n");
             if(nextTargetDirectionUp(state) == -1){
                 state->movementState = MOVEMENT_DOWN;
 			}else{
                 state->targetFloor = nextTargetDirectionUp(state);
 			}
+                return;
         case MOVEMENT_DOWN :
+                //printf("DOWN\n");
             if(nextTargetDirectionDown(state) == -1){
                 state->movementState = MOVEMENT_UP;
 			}else{
                 state->targetFloor = nextTargetDirectionDown(state);     
 			}
+                return;
         case MOVEMENT_IDLE :
+                //printf("IDLE\n");
             state->targetFloor = nextTargetNoDirection(state);
+                return;
 	}
 }
 
@@ -115,7 +125,7 @@ void updateTargetFloor(struct elevatorState *state){
 void updateNextFloor(struct elevatorState *state){
     if(state->movementState == MOVEMENT_UP){
         state->nextFloor = state->lastVisitedFloor + 1;
-	}else if(state->movementState == MOVEMENT_DOWN){
+        }else if(state->movementState == MOVEMENT_DOWN){
         state->nextFloor = state->lastVisitedFloor - 1;
 	}
 }

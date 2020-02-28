@@ -18,8 +18,8 @@ typedef enum {
  * @brief Keeps track of states. 
  */
 struct elevatorState {
-    bool orderUp[3];
-    bool orderDown[3];
+    bool orderUp[4];
+    bool orderDown[4];
     bool orderInside[4];
     short lastVisitedFloor;
     short nextFloor;

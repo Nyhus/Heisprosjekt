@@ -79,53 +79,52 @@ int nextTargetNoDirection(struct elevatorState *state){
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
             
             if(state->orderDown[i] == true){
-                    printf("1111111111111111111111111111111111111111111           %d\n",i);
-                return i;
+               return i;
             }
 
             if(state->orderUp[i] == true){
-                    printf("2222222222222222222222222222222222222222222222           %d\n",i);
                 return i;
             }
 
             if(state->orderInside[i] == true){
-                    printf("33333333333333333333333333333333333333333333333           %d\n",i);
                 return i;
             }
     }
-        return state->lastVisitedFloor;
+       return -1;
 }
 
 void updateTargetFloor(struct elevatorState *state){
 	switch(state->movementState){
         case MOVEMENT_UP :
-                //printf("UP\n");
-            if(nextTargetDirectionUp(state) == -1){
-                state->movementState = MOVEMENT_DOWN;
-			}else{
-                state->targetFloor = nextTargetDirectionUp(state);
-			}
+                if(nextTargetDirectionUp(state) == -1){
+                        state->movementState = MOVEMENT_DOWN;
+	        }else{
+                        state->targetFloor = nextTargetDirectionUp(state);
+		}
                 return;
         case MOVEMENT_DOWN :
-                //printf("DOWN\n");
-            if(nextTargetDirectionDown(state) == -1){
-                state->movementState = MOVEMENT_UP;
-			}else{
-                state->targetFloor = nextTargetDirectionDown(state);     
-			}
+                if(nextTargetDirectionDown(state) == -1){
+                        state->movementState = MOVEMENT_UP;
+		}else{
+                        state->targetFloor = nextTargetDirectionDown(state);     
+		}
                 return;
         case MOVEMENT_IDLE :
-                //printf("IDLE\n");
-            state->targetFloor = nextTargetNoDirection(state);
+                state->targetFloor = nextTargetNoDirection(state);
                 return;
 	}
 }
 
 
 void updateNextFloor(struct elevatorState *state){
-    if(state->movementState == MOVEMENT_UP){
-        state->nextFloor = state->lastVisitedFloor + 1;
-        }else if(state->movementState == MOVEMENT_DOWN){
-        state->nextFloor = state->lastVisitedFloor - 1;
-	}
+        switch(state->movementState){
+                case(MOVEMENT_UP) :
+                        for (int i = 0; i < 4; i++){ if(hardware_read_floor_sensor(i)){state->nextFloor = i + 1 ;}}
+                        break;
+                case(MOVEMENT_DOWN) :
+                        for (int i = 0; i < 4; i++){ if(hardware_read_floor_sensor(i)){state->nextFloor = i - 1 ;}}
+                        break;
+                case(MOVEMENT_IDLE) :
+                        break;
+        }
 }

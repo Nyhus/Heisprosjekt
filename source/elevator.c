@@ -6,18 +6,18 @@
 
 void flushState(struct elevatorState *state){
     // for (int i = 0; i < sizeOf(); i++;) {}
-    state->orderUp[0] = false;
-    state->orderUp[1] = false;
-    state->orderUp[2] = false;
-    state->orderUp[3] = false;
-    state->orderDown[0] = false;
-    state->orderDown[1] = false;
-    state->orderDown[2] = false;
-    state->orderDown[3] = false;
-    state->orderInside[0] = false;
-    state->orderInside[1] = false;
-    state->orderInside[2] = false;
-    state->orderInside[3] = false;
+    state->orderUp[0] = 0;
+    state->orderUp[1] = 0;
+    state->orderUp[2] = 0;
+    state->orderUp[3] = 0;
+    state->orderDown[0] = 0;
+    state->orderDown[1] = 0;
+    state->orderDown[2] = 0;
+    state->orderDown[3] = 0;
+    state->orderInside[0] = 0;
+    state->orderInside[1] = 0;
+    state->orderInside[2] = 0;
+    state->orderInside[3] = 0;
     state->movementState = MOVEMENT_IDLE;
 }
 

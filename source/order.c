@@ -5,9 +5,6 @@
 #include "elevator.h"
 #include "queue.h"
 
-// if(state->movementState == MOVEMENT_IDLE){
-//                        updateTargetFloor(state);
-//                 }
 
 void read_orders(struct elevatorState *state){
     if(state->lastVisitedFloor != -1 && !hardware_read_stop_signal()){
@@ -18,13 +15,11 @@ void read_orders(struct elevatorState *state){
                 hardware_command_order_light(f, HARDWARE_ORDER_INSIDE, 1);
                 state->orderInside[f] = true;
             }
-
             /* Orders going up */
             if(hardware_read_order(f, HARDWARE_ORDER_UP)){
                 hardware_command_order_light(f, HARDWARE_ORDER_UP, 1);
                 state->orderUp[f] = true;
             }
-
             /* Orders going down */
             if(hardware_read_order(f, HARDWARE_ORDER_DOWN)){
                 hardware_command_order_light(f, HARDWARE_ORDER_DOWN, 1);

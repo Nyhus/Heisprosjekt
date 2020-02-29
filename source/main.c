@@ -80,7 +80,10 @@ int main(){
         if(hardware_read_floor_sensor(eleState->targetFloor)){
             clear_order(eleState,eleState->lastVisitedFloor);
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            // OPENDOORS        
+            // OPENDOORS      
+            if(eleState->movementState!=MOVEMENT_IDLE){
+                openDoors(eleState);
+            }
             updateTargetFloor(eleState);
             updateNextFloor(eleState);
 		}

@@ -3,6 +3,7 @@
 #include "elevator.h"
 #include "order.h"
 #include "hardware.h"
+#include <stdio.h>
 
 time_t startTime; 
 
@@ -19,7 +20,7 @@ void closeDoors(struct elevatorState* liftState){
 
 void timer(struct elevatorState* liftState){
     clock_t currentClock, startClock;
-    int secondsToWait = 3;
+    int secondsToWait = 1;
     int time_left = 0;
 
     startClock = clock();
@@ -34,6 +35,8 @@ void timer(struct elevatorState* liftState){
         }
         if(hardware_read_stop_signal()){
             startClock = clock();
+            clear_all_order_lights();
+            flushState(liftState);
             hardware_command_stop_light(1);
         }
         else{

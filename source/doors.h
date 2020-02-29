@@ -14,6 +14,6 @@ void openDoors(struct elevatorState* liftState);
  * @brief Checks timer and sets door lights OFF */ 
 void closeDoors();
 
-void pause_three_second_wait(struct elevatorState* liftState);
+void timer(struct elevatorState* liftState);
 
 #endif

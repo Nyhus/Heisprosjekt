@@ -8,21 +8,6 @@
 #include "doors.h"
 #include "queue.h"
 
-static void clear_all_order_lights(){
-    HardwareOrder order_types[3] = {
-        HARDWARE_ORDER_UP,
-        HARDWARE_ORDER_INSIDE,
-        HARDWARE_ORDER_DOWN
-    };
-
-    for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
-        for(int i = 0; i < 3; i++){
-            HardwareOrder type = order_types[i];
-            hardware_command_order_light(f, type, 0);
-        }
-    }
-}
-
 static void sigint_handler(int sig){
     (void)(sig);
     printf("Terminating elevator\n");
@@ -61,6 +46,11 @@ int main(){
             flushState(eleState);
             eleState->targetFloor = -1;
             hardware_command_stop_light(1);
+            for (int f = 0; f < 4; f++){ 
+                if(hardware_read_floor_sensor(f) && hardware_read_stop_signal()){ 
+                    openDoors(eleState); 
+                    }
+            }
         }else{
             hardware_command_stop_light(0);
         }
@@ -81,11 +71,12 @@ int main(){
             clear_order(eleState,eleState->lastVisitedFloor);
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             // OPENDOORS      
-            if(eleState->movementState!=MOVEMENT_IDLE){
+            if(eleState->movementState!=MOVEMENT_IDLE){ printf("99999999999999999999999999999999999\n");
                 openDoors(eleState);
             }
             updateTargetFloor(eleState);
             updateNextFloor(eleState);
+            clear_order(eleState,eleState->lastVisitedFloor);
 		}
         if(eleState->targetFloor > eleState->lastVisitedFloor && !hardware_read_stop_signal()){
             eleState->movementState = MOVEMENT_UP;
@@ -117,6 +108,41 @@ int main(){
             eleState->obstruction = true;
         }else{
             eleState->obstruction = false;
+        }
+        int tracker = 0;
+        int tracker1 = 0;
+        // SETTER IDLE HVIS INGEN BESTILLINGER
+         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
+            
+            /* Internal orders */
+            if(eleState->orderUp[f]){
+                tracker = 1;
+            }
+            /* Orders going up */
+            if(eleState->orderDown[f]){
+                tracker = 1;
+            }
+            /* Orders going down */
+            if(eleState->orderInside[f]){
+                tracker = 1;
+            }
+            if(hardware_read_order(f,HARDWARE_ORDER_UP) && (hardware_read_floor_sensor(f)) && eleState->movementState == MOVEMENT_IDLE){
+                tracker1 = 1;
+            }
+            if(hardware_read_order(f,HARDWARE_ORDER_DOWN) && (hardware_read_floor_sensor(f)) && eleState->movementState == MOVEMENT_IDLE){
+                tracker1 = 1;
+            }
+            if(hardware_read_order(f,HARDWARE_ORDER_INSIDE) && (hardware_read_floor_sensor(f)) && eleState->movementState == MOVEMENT_IDLE){
+                tracker1 = 1;
+            }
+         }
+        if (tracker == 0){
+            eleState->movementState = MOVEMENT_IDLE;
+            printf("MOVEMENT STATE SET TO IDLE\n");
+        }
+        if (tracker1 == 1){
+            openDoors(eleState);
+            printf("OPENING DOOOOOOORS\n");
         }
     }
     return 0;

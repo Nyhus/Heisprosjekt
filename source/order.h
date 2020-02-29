@@ -8,6 +8,7 @@
 #include "hardware.h"
 #include "elevator.h"
 
+void clear_all_order_lights();
 
 /**
  * @brief Updates state with all new orders.
@@ -25,6 +26,7 @@ void read_orders(struct elevatorState *state);
  *
  */
 void clear_order(struct elevatorState *state, int floorToUpdate);
+
 
 
 

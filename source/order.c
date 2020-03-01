@@ -51,4 +51,3 @@ void clear_order(struct elevatorState *state, int floorToUpdate){
     state->orderDown[floorToUpdate] = false;
     state->orderUp[floorToUpdate] = false;
 }
-

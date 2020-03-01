@@ -57,6 +57,4 @@
 #define LIGHT_DOWN1         -1
 #define LIGHT_UP4           -1
 
-
-
 #endif //#ifndef __INCLUDE_DRIVER_CHANNELS_H__

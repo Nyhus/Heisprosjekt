@@ -16,7 +16,6 @@ static void sigint_handler(int sig){
 }
 
 int main(){
-	printf("Start! \n");
     int error = hardware_init();
     if(error != 0){
         fprintf(stderr, "Unable to initialize hardware\n");
@@ -25,9 +24,7 @@ int main(){
 
     signal(SIGINT, sigint_handler);
 
-    printf("=== Program start ===\n");
-    printf("Press the stop button on the elevator panel to exit\n");
-
+    printf("=== Program start ===\n Use CTRL + Z in terminal to terminate program.");
     struct elevatorState state = {.lastVisitedFloor = -1};
     struct elevatorState *eleState;
     eleState = &state;
@@ -36,11 +33,9 @@ int main(){
         initializeElevator(eleState);
         clear_all_order_lights();
 	}
-    printf("lastVisitedFloor before while:%d------\n",eleState->lastVisitedFloor);
 
     while(1){
         if(hardware_read_stop_signal()){
-            printf("STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPP");
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             clear_all_order_lights();
             flushState(eleState);
@@ -54,11 +49,7 @@ int main(){
         }else{
             hardware_command_stop_light(0);
         }
-        if(hardware_read_order(3, HARDWARE_ORDER_INSIDE) && hardware_read_order(0, HARDWARE_ORDER_INSIDE)){ // Innside-knapp 4 terminerer programmet
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            break;
-        }
-
+        
         /* For-loop for updating last visited floor */
         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
             if(hardware_read_floor_sensor(f)){
@@ -71,7 +62,7 @@ int main(){
             clear_order(eleState,eleState->lastVisitedFloor);
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             // OPENDOORS      
-            if(eleState->movementState!=MOVEMENT_IDLE){ printf("99999999999999999999999999999999999\n");
+            if(eleState->movementState!=MOVEMENT_IDLE){ 
                 openDoors(eleState);
             }
             updateTargetFloor(eleState);
@@ -96,14 +87,10 @@ int main(){
 		}else {
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);  
         }
-        printf("movementDireeeeeeeeeeeeeeeeeeeeeeeeeeeeeeection = %d\n",eleState->movementState);
-        printf("targetFloor %d\n",eleState->targetFloor);
-        printf("nextFloor %d\n",eleState->nextFloor);printf("lastVisitedFloor %d\n",eleState->lastVisitedFloor);printf("nextFloor %d\n",eleState->nextFloor);printf("nextFloor %d\n",eleState->nextFloor);printf("nextFloor %d\n",eleState->nextFloor);printf("nextFloor %d\n",eleState->nextFloor);printf("nextFloor %d\n",eleState->nextFloor);
                 
         read_orders(eleState);
         updateTargetFloor(eleState);
         updateNextFloor(eleState);
-        // closeDoors(eleState);
         if(hardware_read_obstruction_signal()){
             eleState->obstruction = true;
         }else{
@@ -138,11 +125,9 @@ int main(){
          }
         if (tracker == 0){
             eleState->movementState = MOVEMENT_IDLE;
-            printf("MOVEMENT STATE SET TO IDLE\n");
         }
         if (tracker1 == 1){
             openDoors(eleState);
-            printf("OPENING DOOOOOOORS\n");
         }
     }
     return 0;

@@ -8,12 +8,9 @@
 #include "elevator.h"
 
 /**
- * @brief Sets door light ON and starts timer */ 
+ * @brief Opens doors while making sure orders are still handled. Will close the doors after 3 seconds. 
+ * @warning Pressing the stop button or releasing the obstruction switch will restart the timer to 3 seconds.
+*/
 void openDoors(struct elevatorState* liftState);
-/**
- * @brief Checks timer and sets door lights OFF */ 
-void closeDoors();
-
-void timer(struct elevatorState* liftState);
 
 #endif

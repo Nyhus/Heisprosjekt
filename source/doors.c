@@ -8,19 +8,8 @@
 time_t startTime; 
 
 void openDoors(struct elevatorState* liftState){
-    // ENDRE STATE // START TIMER
-    timer(liftState);
-}
-
-void closeDoors(struct elevatorState* liftState){
-    if (time(NULL) - startTime >= 3 && liftState->obstruction == false){
-        // LUKK DØR 
-    }
-}
-
-void timer(struct elevatorState* liftState){
     clock_t currentClock, startClock;
-    int secondsToWait = 1;
+    int secondsToWait = 3;
     int time_left = 0;
 
     startClock = clock();

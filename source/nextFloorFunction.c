@@ -3,7 +3,6 @@
 #define BOTTOM_FLOOR 0
 #define TOP_FLOOR 3
 
-
 int nextFloorToStopAt(elevatorState *state){
   switch(state->elevatorDirection) {
     case(MOVEMENT_UP) :

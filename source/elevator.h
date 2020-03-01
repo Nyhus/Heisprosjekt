@@ -8,6 +8,9 @@
 #include <stdbool.h>
 #include "hardware.h"
 
+/**
+ * @brief Movement direction used in @c elevatorState.
+ */
 typedef enum {
     MOVEMENT_UP,
     MOVEMENT_IDLE,
@@ -15,7 +18,7 @@ typedef enum {
 } movementDirection;
 
 /** 
- * @brief Keeps track of states. 
+ * @brief Keeps track of all states. 
  */
 struct elevatorState {
     bool orderUp[4];
@@ -31,7 +34,6 @@ struct elevatorState {
     movementDirection movementState;
 };
 
-
 /**
  * @brief Sets everything to zero and false.
  *
@@ -45,7 +47,5 @@ void flushState(struct elevatorState *state);
  * @param @p state Pointer to elevator state.
 */
 void initializeElevator(struct elevatorState *state);
-
-
 
 #endif

@@ -115,7 +115,6 @@ void updateTargetFloor(struct elevatorState *state){
 	}
 }
 
-
 void updateNextFloor(struct elevatorState *state){
         switch(state->movementState){
                 case(MOVEMENT_UP) :

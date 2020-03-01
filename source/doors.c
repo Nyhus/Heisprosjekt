@@ -7,7 +7,7 @@
 
 time_t startTime; 
 
-void openDoors(struct elevatorState* state){
+void d_openDoors(struct elevatorState* state){
     clock_t currentClock, startClock;
     int secondsToWait = 3;
     int time_left = 0;
@@ -24,19 +24,19 @@ void openDoors(struct elevatorState* state){
         }
         if(hardware_read_stop_signal()){
             startClock = clock();
-            clear_all_order_lights();
-            flushState(state);
+            o_clearAllOrderLights();
+            e_flushState(state);
             hardware_command_stop_light(1);
         }
         else{
             hardware_command_stop_light(0);
-            read_orders(state);
+            o_readOrders(state);
         }
     }
     hardware_command_door_open(0);
 }
 
-void openDoorsIfOrderedToCurrentFloor(struct elevatorState *state){
+void d_openDoorsIfOrderedToCurrentFloor(struct elevatorState *state){
         short tracker = 0;
          for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
            
@@ -51,6 +51,6 @@ void openDoorsIfOrderedToCurrentFloor(struct elevatorState *state){
             }
          }
         if (tracker == 1){
-            openDoors(state);
+            d_openDoors(state);
         }
 }

@@ -38,12 +38,12 @@ struct elevatorState {
  * @brief Sets all orders to zero and movement state to idle.
  * @param @p state Pointer to elevator state.
 */
-void flushState(struct elevatorState *state);
+void e_flushState(struct elevatorState *state);
 
 /**
  * @brief Initializes the elevator to a valid position, will only be called on program start.
  * @param @p state Pointer to elevator state.
 */
-void initializeElevator(struct elevatorState *state);
+void e_initializeElevator(struct elevatorState *state);
 
 #endif

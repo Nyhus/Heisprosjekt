@@ -5,7 +5,7 @@
 #include "elevator.h"
 #include "queue.h"
 
-void clear_all_order_lights(){
+void o_clearAllOrderLights(){
     HardwareOrder order_types[3] = {
         HARDWARE_ORDER_UP,
         HARDWARE_ORDER_INSIDE,
@@ -20,7 +20,7 @@ void clear_all_order_lights(){
     }
 }
 
-void read_orders(struct elevatorState *state){
+void o_readOrders(struct elevatorState *state){
     if(state->lastVisitedFloor != -1 && !hardware_read_stop_signal()){
         /* Lights are set and cleared like this: */
         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
@@ -43,7 +43,7 @@ void read_orders(struct elevatorState *state){
     }
 }
 
-void clear_order(struct elevatorState *state, int floorToUpdate){
+void o_clearOrder(struct elevatorState *state, int floorToUpdate){
     hardware_command_order_light(floorToUpdate, HARDWARE_ORDER_DOWN, 0);
     hardware_command_order_light(floorToUpdate, HARDWARE_ORDER_UP, 0);
     hardware_command_order_light(floorToUpdate, HARDWARE_ORDER_INSIDE, 0);

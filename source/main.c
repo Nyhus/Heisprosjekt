@@ -30,20 +30,20 @@ int main(){
     eleState = &state;
     
     while(eleState->lastVisitedFloor == -1){
-        initializeElevator(eleState);
-        clear_all_order_lights();
+        e_initializeElevator(eleState);
+        o_clearAllOrderLights();
 	}
 
     while(1){
         if(hardware_read_stop_signal()){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            clear_all_order_lights();
-            flushState(eleState);
+            o_clearAllOrderLights();
+            e_flushState(eleState);
             eleState->targetFloor = -1;
             hardware_command_stop_light(1);
             for (int f = 0; f < 4; f++){ 
                 if(hardware_read_floor_sensor(f) && hardware_read_stop_signal()){ 
-                    openDoors(eleState); 
+                    d_openDoors(eleState); 
                     }
             }
         }else{
@@ -65,14 +65,14 @@ int main(){
 
         /* Checks if target floor is reached and updates states */
         if(hardware_read_floor_sensor(eleState->targetFloor)){
-            clear_order(eleState,eleState->lastVisitedFloor);
+            o_clearOrder(eleState,eleState->lastVisitedFloor);
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             if(eleState->movementState!=MOVEMENT_IDLE){ 
-                openDoors(eleState);
+                d_openDoors(eleState);
             }
-            updateTargetFloor(eleState);
-            updateNextFloor(eleState);
-            clear_order(eleState,eleState->lastVisitedFloor);
+            q_updateTargetFloor(eleState);
+            q_updateNextFloor(eleState);
+            o_clearOrder(eleState,eleState->lastVisitedFloor);
 		}
 
         /* Decides direction to move */
@@ -95,11 +95,11 @@ int main(){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);  
         }
                 
-        read_orders(eleState);
-        updateTargetFloor(eleState);
-        updateNextFloor(eleState);
-        setIdleIfNoOrder(eleState);
-        openDoorsIfOrderedToCurrentFloor(eleState);
+        o_readOrders(eleState);
+        q_updateTargetFloor(eleState);
+        q_updateNextFloor(eleState);
+        q_setIdleIfNoOrder(eleState);
+        d_openDoorsIfOrderedToCurrentFloor(eleState);
     }
     return 0;
 }

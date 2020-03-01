@@ -3,7 +3,7 @@
 #include "hardware.h"
 #include <stdio.h>
 
-int nextTargetDirectionUp(struct elevatorState *state){
+int q_nextTargetDirectionUp(struct elevatorState *state){
     int highestOrderDown = -1;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
         if(state->orderDown[i] && i > highestOrderDown && i > state->lastVisitedFloor){
@@ -37,7 +37,7 @@ int nextTargetDirectionUp(struct elevatorState *state){
     }
 }
 
-int nextTargetDirectionDown(struct elevatorState *state){
+int q_nextTargetDirectionDown(struct elevatorState *state){
     int highestOrderDown = -1;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
         if(state->orderDown[i] && i > highestOrderDown && i < state->lastVisitedFloor){
@@ -75,7 +75,7 @@ int nextTargetDirectionDown(struct elevatorState *state){
         }
 }
 
-int nextTargetNoDirection(struct elevatorState *state){
+int q_nextTargetNoDirection(struct elevatorState *state){
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){
             
             if(state->orderDown[i] == true){
@@ -93,29 +93,29 @@ int nextTargetNoDirection(struct elevatorState *state){
        return -1;
 }
 
-void updateTargetFloor(struct elevatorState *state){
+void q_updateTargetFloor(struct elevatorState *state){
 	switch(state->movementState){
         case MOVEMENT_UP :
-                if(nextTargetDirectionUp(state) == -1){
+                if(q_nextTargetDirectionUp(state) == -1){
                         state->movementState = MOVEMENT_DOWN;
 	        }else{
-                        state->targetFloor = nextTargetDirectionUp(state);
+                        state->targetFloor = q_nextTargetDirectionUp(state);
 		}
                 return;
         case MOVEMENT_DOWN :
-                if(nextTargetDirectionDown(state) == -1){
+                if(q_nextTargetDirectionDown(state) == -1){
                         state->movementState = MOVEMENT_UP;
 		}else{
-                        state->targetFloor = nextTargetDirectionDown(state);     
+                        state->targetFloor = q_nextTargetDirectionDown(state);     
 		}
                 return;
         case MOVEMENT_IDLE :
-                state->targetFloor = nextTargetNoDirection(state);
+                state->targetFloor = q_nextTargetNoDirection(state);
                 return;
 	}
 }
 
-void updateNextFloor(struct elevatorState *state){
+void q_updateNextFloor(struct elevatorState *state){
         switch(state->movementState){
                 case(MOVEMENT_UP) :
                         for (int i = 0; i < 4; i++){ if(hardware_read_floor_sensor(i)){state->nextFloor = i + 1 ;}}
@@ -128,7 +128,7 @@ void updateNextFloor(struct elevatorState *state){
         }
 }
 
-void setIdleIfNoOrder(struct elevatorState *state){
+void q_setIdleIfNoOrder(struct elevatorState *state){
         short tracker = 0; 
          for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
             if(state->orderUp[f]){

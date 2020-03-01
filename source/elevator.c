@@ -4,7 +4,7 @@
 #include "hardware.h"
 #include "doors.h"
 
-void flushState(struct elevatorState *state){
+void e_flushState(struct elevatorState *state){
     state->orderUp[0] = 0;
     state->orderUp[1] = 0;
     state->orderUp[2] = 0;
@@ -20,7 +20,7 @@ void flushState(struct elevatorState *state){
     state->movementState = MOVEMENT_IDLE;
 }
 
-void initializeElevator(struct elevatorState *state){
+void e_initializeElevator(struct elevatorState *state){
     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
     state->movementState = MOVEMENT_DOWN;
     for(int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++){

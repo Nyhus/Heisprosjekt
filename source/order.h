@@ -11,19 +11,19 @@
 /**
  * @brief Clears the order lights; inside elevator and on all floors.
  */
-void clear_all_order_lights();
+void o_clearAllOrderLights();
 
 /**
  * @brief Updates state with all new orders.
  * @param @p state Pointer to the elevator state.
  */
-void read_orders(struct elevatorState *state);
+void o_readOrders(struct elevatorState *state);
 
 /**
  * @brief Clears order when the elevator arrives at floor.
  * @param @p state Pointer to the elevator state.
  * @param floorToUpdate Floor to remove order for.
  */
-void clear_order(struct elevatorState *state, int floorToUpdate);
+void o_clearOrder(struct elevatorState *state, int floorToUpdate);
 
 #endif

@@ -49,6 +49,11 @@ int main(){
         }else{
             hardware_command_stop_light(0);
         }
+        if(hardware_read_obstruction_signal()){
+            eleState->obstruction = true;
+        }else{
+            eleState->obstruction = false;
+        }
         
         /* For-loop for updating last visited floor */
         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
@@ -58,10 +63,10 @@ int main(){
             }
         }
 
+        /* Checks if target floor is reached and updates states */
         if(hardware_read_floor_sensor(eleState->targetFloor)){
             clear_order(eleState,eleState->lastVisitedFloor);
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            // OPENDOORS      
             if(eleState->movementState!=MOVEMENT_IDLE){ 
                 openDoors(eleState);
             }
@@ -69,6 +74,8 @@ int main(){
             updateNextFloor(eleState);
             clear_order(eleState,eleState->lastVisitedFloor);
 		}
+
+        /* Decides direction to move */
         if(eleState->targetFloor > eleState->lastVisitedFloor && !hardware_read_stop_signal()){
             eleState->movementState = MOVEMENT_UP;
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
@@ -91,44 +98,8 @@ int main(){
         read_orders(eleState);
         updateTargetFloor(eleState);
         updateNextFloor(eleState);
-        if(hardware_read_obstruction_signal()){
-            eleState->obstruction = true;
-        }else{
-            eleState->obstruction = false;
-        }
-        int tracker = 0;
-        int tracker1 = 0;
-        // SETTER IDLE HVIS INGEN BESTILLINGER
-         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
-            
-            /* Internal orders */
-            if(eleState->orderUp[f]){
-                tracker = 1;
-            }
-            /* Orders going up */
-            if(eleState->orderDown[f]){
-                tracker = 1;
-            }
-            /* Orders going down */
-            if(eleState->orderInside[f]){
-                tracker = 1;
-            }
-            if(hardware_read_order(f,HARDWARE_ORDER_UP) && (hardware_read_floor_sensor(f)) && eleState->movementState == MOVEMENT_IDLE){
-                tracker1 = 1;
-            }
-            if(hardware_read_order(f,HARDWARE_ORDER_DOWN) && (hardware_read_floor_sensor(f)) && eleState->movementState == MOVEMENT_IDLE){
-                tracker1 = 1;
-            }
-            if(hardware_read_order(f,HARDWARE_ORDER_INSIDE) && (hardware_read_floor_sensor(f)) && eleState->movementState == MOVEMENT_IDLE){
-                tracker1 = 1;
-            }
-         }
-        if (tracker == 0){
-            eleState->movementState = MOVEMENT_IDLE;
-        }
-        if (tracker1 == 1){
-            openDoors(eleState);
-        }
+        setIdleIfNoOrder(eleState);
+        openDoorsIfOrderedToCurrentFloor(eleState);
     }
     return 0;
 }

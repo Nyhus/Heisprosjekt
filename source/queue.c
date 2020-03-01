@@ -24,17 +24,17 @@ int nextTargetDirectionUp(struct elevatorState *state){
 	}
     if(lowestOrderInside == 4 && lowestOrderUp == 4){
         return highestOrderDown;
-	}else if(lowestOrderInside == 4 && lowestOrderUp != 4){
+    }else if(lowestOrderInside == 4 && lowestOrderUp != 4){
         return lowestOrderUp;
-	}else if(lowestOrderInside != 4 && lowestOrderUp == 4){
+    }else if(lowestOrderInside != 4 && lowestOrderUp == 4){
         return lowestOrderInside;
-	}else{
-                if(lowestOrderInside < lowestOrderUp){
-                        return lowestOrderInside;
-                }else{
-                        return lowestOrderUp;
-                }
-	}
+    }else{
+        if(lowestOrderInside < lowestOrderUp){
+            return lowestOrderInside;
+        }else{
+            return lowestOrderUp;
+        }
+    }
 }
 
 int nextTargetDirectionDown(struct elevatorState *state){
@@ -127,3 +127,22 @@ void updateNextFloor(struct elevatorState *state){
                         break;
         }
 }
+
+void setIdleIfNoOrder(struct elevatorState *state){
+        short tracker = 0; 
+         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
+            if(state->orderUp[f]){
+                tracker = 1;
+            }
+            if(state->orderDown[f]){
+                tracker = 1;
+            }
+            if(state->orderInside[f]){
+                tracker = 1;
+            }
+         }
+        if (tracker == 0){
+            state->movementState = MOVEMENT_IDLE;
+        }
+}
+

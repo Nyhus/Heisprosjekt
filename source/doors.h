@@ -9,8 +9,16 @@
 
 /**
  * @brief Opens doors while making sure orders are still handled. Will close the doors after 3 seconds. 
+ * @param @p state Pointer to elevator state.
+ *
  * @warning Pressing the stop button or releasing the obstruction switch will restart the timer to 3 seconds.
 */
-void openDoors(struct elevatorState* liftState);
+void openDoors(struct elevatorState* state);
+
+/** 
+ * @brief Checks for orders to a floor the elevator is idling in and opens doors if idle.
+ * @param @p state Pointer to elevator state.
+ */
+void openDoorsIfOrderedToCurrentFloor(struct elevatorState *state);
 
 #endif

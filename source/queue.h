@@ -38,4 +38,11 @@ int nextTargetDirectionDown(struct elevatorState *state);
  */
 int nextTargetNoDirection(struct elevatorState *state);
 
+/** 
+ * @brief Updates state to idle if there are no orders.
+ * @param @p state Pointer to elevator state.
+ */
+void setIdleIfNoOrder(struct elevatorState *state);
+
+
 #endif

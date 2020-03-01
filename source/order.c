@@ -3,7 +3,6 @@
 #include "order.h"
 #include "hardware.h"
 #include "elevator.h"
-#include "queue.h"
 
 void o_clearAllOrderLights(){
     HardwareOrder order_types[3] = {
